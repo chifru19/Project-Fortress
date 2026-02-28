@@ -26,6 +26,15 @@ services:
       - private-net
     command: sh -c "chmod +x /logs/monitor.sh && /logs/monitor.sh"
 
+  honeypot:
+    image: cowrie/cowrie:latest
+    container_name: fortress-honeypot
+    ports:
+      - "2222:2222"
+    networks:
+      - public-net
+    restart: always
+
 networks:
   public-net:
     driver: bridge
