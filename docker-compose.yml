@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   web-browser:
     image: alpine
@@ -15,6 +17,12 @@ services:
     networks:
       - public-net
       - private-net
+    # Added resource limits for proxy stability
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 64M
 
   secure-database:
     image: postgres:alpine
@@ -22,6 +30,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     networks:
       - private-net
+    # Database is isolated on private-net
 
   security-monitor:
     image: alpine
@@ -42,6 +51,7 @@ services:
     deploy:
       resources:
         limits:
+          # Protects your host from honeypot resource exhaustion
           cpus: '0.50'
           memory: 128M
 
@@ -49,4 +59,5 @@ networks:
   public-net:
     driver: bridge
   private-net:
+    # Restricts database/monitor traffic to internal only
     internal: true
