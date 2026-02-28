@@ -4,6 +4,11 @@ services:
     networks:
       - public-net
     command: sleep infinity
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 128M
 
   frontend-proxy:
     image: nginx:alpine
@@ -12,11 +17,11 @@ services:
       - private-net
 
   secure-database:
-  image: postgres:alpine
-  environment:
-    POSTGRES_PASSWORD: ${DB_PASSWORD}
-  networks:
-    - private-net
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - private-net
 
   security-monitor:
     image: alpine
@@ -34,6 +39,11 @@ services:
     networks:
       - public-net
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 128M
 
 networks:
   public-net:
