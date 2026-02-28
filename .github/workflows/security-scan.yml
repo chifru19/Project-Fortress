@@ -1,0 +1,16 @@
+name: Security Scan
+on: [push]
+
+jobs:
+  checkov-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          # This scans your docker-compose and k8s files
+          directory: .
+          framework: docker_compose,kubernetes
