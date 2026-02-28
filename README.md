@@ -30,3 +30,9 @@ The `security-monitor` service runs a custom Bash script (`monitor.sh`) to maint
 
 ### 🛡️ Verified Intrusion Log
 `Sat Feb 28 10:52:14 CET 2026: [HONEYPOT] Monitoring trap on port 2222...`
+## 🛡️ Proactive Security: Static Analysis (IaC)
+To ensure the infrastructure adheres to industry best practices, I integrated **Checkov** for static analysis of the Docker configuration.
+
+### 🔍 Security Audit Highlights:
+* **Secret Management**: Successfully resolved **CKV_SECRET_6** by migrating hardcoded credentials to a protected `.env` environment.
+* **Policy Compliance**: Automated scanning ensures no "High Entropy" strings are committed to version control.

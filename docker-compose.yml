@@ -12,11 +12,11 @@ services:
       - private-net
 
   secure-database:
-    image: postgres:alpine
-    environment:
-      POSTGRES_PASSWORD: password123
-    networks:
-      - private-net
+  image: postgres:alpine
+  environment:
+    POSTGRES_PASSWORD: ${DB_PASSWORD}
+  networks:
+    - private-net
 
   security-monitor:
     image: alpine
