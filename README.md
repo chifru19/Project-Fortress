@@ -44,3 +44,7 @@ To further evolve **Project-Fortress**, I plan to:
 * **Elasticsearch Integration**: Pipe the `firewall_audit.log` into an ELK stack for advanced visual analytics of attacker geographic origins.
 * **Automated Containment**: Script a trigger that automatically isolates a container if the `security-monitor` detects a brute-force threshold breach.
 * **Web Application Firewall (WAF)**: Deploy an Nginx WAF to protect the `frontend-proxy` from SQL injection and XSS attempts.
+* ## ⚔️ Active Defense Implementation
+* **Zero-Trust Networking**: Configured an `internal: true` private network for the database, ensuring no external traffic can reach sensitive back-end assets.
+* **Resource Sandboxing**: Implemented Docker `deploy` resource limits (128MB RAM / 0.5 CPU) to mitigate the risk of a "Fork Bomb" or resource exhaustion attack within the honeypot.
+* **Automated Monitoring**: Integrated a `monitor.sh` listener that captures real-time logs from the honeypot for forensic analysis.
