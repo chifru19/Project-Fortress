@@ -11,8 +11,7 @@ jobs:
       - name: Run Checkov
         uses: bridgecrewio/checkov-action@master
         with:
-          # Scans the root directory for docker-compose and k8s files
           directory: .
-          # Using specific frameworks prevents the "argument error"
-          framework: docker_compose,kubernetes 
-          quiet: true # Shows only failed checks to keep logs clean
+          # Framework MUST be 'all' or 'dockerfile' to avoid the exit error
+          framework: all 
+          quiet: true
