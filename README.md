@@ -36,3 +36,11 @@ To ensure the infrastructure adheres to industry best practices, I integrated **
 ### 🔍 Security Audit Highlights:
 * **Secret Management**: Successfully resolved **CKV_SECRET_6** by migrating hardcoded credentials to a protected `.env` environment.
 * **Policy Compliance**: Automated scanning ensures no "High Entropy" strings are committed to version control.
+## 🏁 Conclusion & Future Roadmap
+This lab successfully demonstrates the balance between **Network Isolation**, **Active Deception**, and **Resource Availability**. By treating the infrastructure as code (IaC), I was able to automate security audits and maintain a hardened posture against common SSH exploitation techniques.
+
+### 🚀 Future Enhancements
+To further evolve **Project-Fortress**, I plan to:
+* **Elasticsearch Integration**: Pipe the `firewall_audit.log` into an ELK stack for advanced visual analytics of attacker geographic origins.
+* **Automated Containment**: Script a trigger that automatically isolates a container if the `security-monitor` detects a brute-force threshold breach.
+* **Web Application Firewall (WAF)**: Deploy an Nginx WAF to protect the `frontend-proxy` from SQL injection and XSS attempts.
