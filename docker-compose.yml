@@ -1,0 +1,33 @@
+services:
+  web-browser:
+    image: alpine
+    networks:
+      - public-net
+    command: sleep infinity
+
+  frontend-proxy:
+    image: nginx:alpine
+    networks:
+      - public-net
+      - private-net
+
+  secure-database:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: password123
+    networks:
+      - private-net
+
+  security-monitor:
+    image: alpine
+    volumes:
+      - .:/logs
+    networks:
+      - private-net
+    command: sh -c "chmod +x /logs/monitor.sh && /logs/monitor.sh"
+
+networks:
+  public-net:
+    driver: bridge
+  private-net:
+    internal: true
