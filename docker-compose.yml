@@ -1,26 +1,19 @@
+version: '3.8'
+
 networks:
   public-net:
     driver: bridge
   private-net:
     driver: bridge
-    internal: true
+    internal: true  # Completely isolates this network from external WAN routing
 
 services:
-  web-browser:
-    image: alpine
-    command: sleep infinity
-    networks:
-      - public-net
-
   frontend-proxy:
     image: nginx:alpine
     ports:
       - "8080:80"
-    volumes:
-      - ./html:/usr/share/nginx/html
     networks:
       - public-net
-      - private-net
 
   fortress-honeypot:
     image: cowrie/cowrie:latest
