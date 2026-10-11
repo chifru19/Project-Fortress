@@ -1,63 +1,47 @@
-version: '3.8'
-
-services:
-  web-browser:
-    image: alpine
-    networks:
-      - public-net
-    command: sleep infinity
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 128M
-
-  frontend-proxy:
-    image: nginx:alpine
-    networks:
-      - public-net
-      - private-net
-    # Added resource limits for proxy stability
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 64M
-
-  secure-database:
-    image: postgres:alpine
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - private-net
-    # Database is isolated on private-net
-
-  security-monitor:
-    image: alpine
-    volumes:
-      - .:/logs
-    networks:
-      - private-net
-    command: sh -c "chmod +x /logs/monitor.sh && /logs/monitor.sh"
-
-  honeypot:
-    image: cowrie/cowrie:latest
-    container_name: fortress-honeypot
-    ports:
-      - "2222:2222"
-    networks:
-      - public-net
-    restart: always
-    deploy:
-      resources:
-        limits:
-          # Protects your host from honeypot resource exhaustion
-          cpus: '0.50'
-          memory: 128M
-
 networks:
   public-net:
     driver: bridge
   private-net:
-    # Restricts database/monitor traffic to internal only
+    driver: bridge
     internal: true
+
+services:
+  web-browser:
+    image: alpine
+    command: sleep infinity
+    networks:
+      - public-net
+
+  frontend-proxy:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    networks:
+      - public-net
+      - private-net
+
+  fortress-honeypot:
+    image: cowrie/cowrie:latest
+    ports:
+      - "2222:2222"
+    networks:
+      - public-net
+
+  secure-database:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-securepassword}
+    networks:
+      - private-net
+
+  security-monitor:
+    image: alpine
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["/bin/sh", "/app/monitor.sh"]
+    networks:
+      - public-net
+      - private-net

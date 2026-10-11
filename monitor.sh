@@ -1,7 +1,7 @@
 #!/bin/sh
-echo "--- Starting Network Firewall Log ---"
 while true; do
-  timestamp=$(date)
-  echo "[$timestamp] Monitoring traffic on Private Vault..." >> firewall_audit.log
-  sleep 10
+  if nc -zvw1 fortress-honeypot 2222 2>/dev/null; then
+    echo "$(date): [HONEYPOT] Connection detected on port 2222" >> firewall_audit.log
+  fi
+  sleep 5
 done
